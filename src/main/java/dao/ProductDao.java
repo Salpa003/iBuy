@@ -37,6 +37,11 @@ public class ProductDao implements Dao<Integer, Product> {
             RETURNING id,name,description,count,price,seller;
             """;
 
+    private final String GET_BY_ID_SQL = GET_ALL_SQL + " WHERE id = ?;";
+    private final String UPDATE_SQL = """
+            
+            """;
+
 
     @Override
     public List<Product> getAll() {
@@ -62,7 +67,25 @@ public class ProductDao implements Dao<Integer, Product> {
 
     @Override
     public Optional<Product> get(Integer id) {
-        return null;
+        Product product = null;
+        try (Connection connection = ConnectionManager.open();
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_BY_ID_SQL)) {
+        preparedStatement.setInt(1,id);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        if (resultSet.next()) {
+            product = new Product(
+                    resultSet.getInt("id"),
+                    resultSet.getString("name"),
+                    resultSet.getString("description"),
+                    resultSet.getDouble("price"),
+                    resultSet.getInt("count"),
+                    resultSet.getString("seller")
+            );
+        }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.ofNullable(product);
     }
 
     @Override
