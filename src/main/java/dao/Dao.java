@@ -1,16 +1,17 @@
 package dao;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface Dao<K, E> { // Key Entity
 
     List<E> getAll();
 
-    E get(K k);
+    Optional<E> get(K k);
 
-    E delete(K k);
+    Optional<E> delete(K k);
 
-    E update(E e);
+    Optional<E> update(E e);
 
     void save(E e);
 }

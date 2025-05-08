@@ -6,10 +6,18 @@ public class Product {
     private String description;
     private double price;
     private int count;
-    private Seller seller;
+    private String seller;
 
-    public Product(int id, String name, String description, double price, int count, Seller seller) {
+    public Product(int id, String name, String description, double price, int count, String seller) {
         this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.count = count;
+        this.seller = seller;
+    }
+
+    public Product(String name, String description, double price, int count, String seller) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -49,11 +57,11 @@ public class Product {
         this.count = count;
     }
 
-    public Seller getSeller() {
+    public String getSeller() {
         return seller;
     }
 
-    public void setSeller(Seller seller) {
+    public void setSeller(String seller) {
         this.seller = seller;
     }
 

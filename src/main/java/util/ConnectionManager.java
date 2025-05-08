@@ -6,13 +6,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class ConnectionManager {
+public final class ConnectionManager {
     private static final Properties PROPERTIES = new Properties();
 
-    private static final String USER_KEY="";
-    private static final String PASSWoRD_KEY="";
-    private static final String URL_KEY="";
-    private static final String DRIVER_KEY="";
+    private static final String USER_KEY="db.user";
+    private static final String PASSWORD_KEY="db.password";
+    private static final String URL_KEY="db.url";
+    private static final String DRIVER_KEY="db.driver";
 
     static {
         load();
@@ -23,7 +23,7 @@ public class ConnectionManager {
             return DriverManager.getConnection(
                 PROPERTIES.getProperty(URL_KEY),
                 PROPERTIES.getProperty(USER_KEY),
-                PROPERTIES.getProperty(PASSWoRD_KEY)
+                PROPERTIES.getProperty(PASSWORD_KEY)
             );
         } catch (SQLException e) {
             throw new RuntimeException("Ошибка при открытии соединения с БД");
