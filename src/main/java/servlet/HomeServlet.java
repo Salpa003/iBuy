@@ -35,7 +35,7 @@ public class HomeServlet extends HttpServlet {
 //        req.setAttribute("currentPage", page);
 //        req.setAttribute("totalPages", (int) Math.ceil(productService.getAll().size() / (double) productsPerPage));
 //
-//        req.getRequestDispatcher(JspPath.createPath("home")).forward(req, resp);
+        req.getRequestDispatcher(JspPath.createPath("home")).forward(req, resp);
 
 
     }
