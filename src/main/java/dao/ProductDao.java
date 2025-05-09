@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class ProductDao implements Dao<Integer, Product> {
+    private SellerDao sellerDao = SellerDao.getInstance();
     private static ProductDao INSTANCE = new ProductDao();
 
     private ProductDao() {
@@ -24,7 +25,7 @@ public class ProductDao implements Dao<Integer, Product> {
     }
 
     private final String GET_ALL_SQL = """
-           SELECT id,name,description,price,count,seller
+           SELECT id,name,description,price,count,seller_id
            FROM ibuy.product
             """;
     private final String SAVE_SQL = """
@@ -34,12 +35,15 @@ public class ProductDao implements Dao<Integer, Product> {
     private final String DELETE_SQL = """
             DELETE FROM ibuy.product
             WHERE id = ? 
-            RETURNING id,name,description,count,price,seller;
+            RETURNING id,name,description,count,price,seller_id;
             """;
 
     private final String GET_BY_ID_SQL = GET_ALL_SQL + " WHERE id = ?;";
     private final String UPDATE_SQL = """
-            
+            UPDATE ibuy.product
+            SET name = ?, description = ?, count = ?, price = ?, seller_id = ?
+            WHERE id = ?
+            RETURNING id,name,description,count,price,seller_id;
             """;
 
 
@@ -50,14 +54,7 @@ public class ProductDao implements Dao<Integer, Product> {
             PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_SQL)) {
            ResultSet resultSet = preparedStatement.executeQuery();
            while (resultSet.next()) {
-               list.add(new Product(
-                       resultSet.getInt("id"),
-                       resultSet.getString("name"),
-                       resultSet.getString("description"),
-                       resultSet.getDouble("price"),
-                       resultSet.getInt("count"),
-                        resultSet.getString("seller")
-               ));
+               list.add(ResultSetToEntity(resultSet));
            }
        } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -73,14 +70,7 @@ public class ProductDao implements Dao<Integer, Product> {
         preparedStatement.setInt(1,id);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
-            product = new Product(
-                    resultSet.getInt("id"),
-                    resultSet.getString("name"),
-                    resultSet.getString("description"),
-                    resultSet.getDouble("price"),
-                    resultSet.getInt("count"),
-                    resultSet.getString("seller")
-            );
+            product = ResultSetToEntity(resultSet);
         }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -96,14 +86,7 @@ public class ProductDao implements Dao<Integer, Product> {
            preparedStatement.setInt(1,id);
            ResultSet resultSet = preparedStatement.executeQuery();
            if (resultSet.next()) {
-               product = new Product(
-                       resultSet.getInt("id"),
-                       resultSet.getString("name"),
-                       resultSet.getString("description"),
-                       resultSet.getDouble("price"),
-                       resultSet.getInt("count"),
-                       resultSet.getString("seller")
-               );
+               product = ResultSetToEntity(resultSet);
            }
        } catch (SQLException e) {
            throw new RuntimeException();
@@ -113,7 +96,24 @@ public class ProductDao implements Dao<Integer, Product> {
 
     @Override
     public  Optional<Product> update(Product product) {
-        return null;
+        Product newProduct = null;
+        try(Connection connection = ConnectionManager.open();
+        PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_SQL)) {
+            preparedStatement.setString(1,product.getName());
+            preparedStatement.setString(2, product.getDescription());
+            preparedStatement.setInt(3,product.getCount());
+            preparedStatement.setDouble(4,product.getPrice());
+            preparedStatement.setInt(5,product.getSeller().getId());
+            preparedStatement.setInt(6,product.getId());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                newProduct = ResultSetToEntity(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.ofNullable(newProduct);
     }
 
     @Override
@@ -124,18 +124,21 @@ public class ProductDao implements Dao<Integer, Product> {
             preparedStatement.setString(2,product.getDescription());
             preparedStatement.setInt(3,product.getCount());
             preparedStatement.setDouble(4,product.getPrice());
-            preparedStatement.setString(5,product.getSeller());
+            preparedStatement.setInt(5,product.getSeller().getId());
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private Seller getSeller(Integer id) {
-        Optional<Seller> optional = SellerDao.getInstance().get(id);
-        if (optional.isPresent())
-            return optional.get();
-        else
-            throw new RuntimeException();
+    private Product ResultSetToEntity(ResultSet resultSet) throws SQLException {
+        return new Product(
+                resultSet.getInt("id"),
+                resultSet.getString("name"),
+                resultSet.getString("description"),
+                resultSet.getDouble("price"),
+                resultSet.getInt("count"),
+                sellerDao.get(resultSet.getInt("seller_id")).get()
+        );
     }
 }

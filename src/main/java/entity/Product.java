@@ -6,9 +6,9 @@ public class Product {
     private String description;
     private double price;
     private int count;
-    private String seller;
+    private Seller seller;
 
-    public Product(int id, String name, String description, double price, int count, String seller) {
+    public Product(int id, String name, String description, double price, int count, Seller seller) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -17,7 +17,7 @@ public class Product {
         this.seller = seller;
     }
 
-    public Product(String name, String description, double price, int count, String seller) {
+    public Product(String name, String description, double price, int count, Seller seller) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -57,11 +57,11 @@ public class Product {
         this.count = count;
     }
 
-    public String getSeller() {
+    public Seller getSeller() {
         return seller;
     }
 
-    public void setSeller(String seller) {
+    public void setSeller(Seller seller) {
         this.seller = seller;
     }
 
