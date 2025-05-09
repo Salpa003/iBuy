@@ -6,6 +6,15 @@ import java.util.List;
 import java.util.Optional;
 
 public class UserDao implements Dao<Integer, User> {
+    private static UserDao INSTANCE = new UserDao();
+
+    private UserDao() {
+
+    }
+
+    public static UserDao getInstance() {
+        return INSTANCE;
+    }
     public List<User> getAll() {
         return null;
     }

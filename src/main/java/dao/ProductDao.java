@@ -1,7 +1,6 @@
 package dao;
 
 import entity.Product;
-import entity.Seller;
 import util.ConnectionManager;
 
 import java.sql.Connection;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class ProductDao implements Dao<Integer, Product> {
-    private SellerDao sellerDao = SellerDao.getInstance();
+    private UserDao userDao = UserDao.getInstance();
     private static ProductDao INSTANCE = new ProductDao();
 
     private ProductDao() {
@@ -138,7 +137,7 @@ public class ProductDao implements Dao<Integer, Product> {
                 resultSet.getString("description"),
                 resultSet.getDouble("price"),
                 resultSet.getInt("count"),
-                sellerDao.get(resultSet.getInt("seller_id")).get()
+                userDao.get(resultSet.getInt("seller_id")).get()
         );
     }
 }

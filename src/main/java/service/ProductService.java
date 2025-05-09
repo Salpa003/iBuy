@@ -2,7 +2,7 @@ package service;
 
 import dao.ProductDao;
 import entity.Product;
-import entity.Seller;
+
 
 import java.util.List;
 import java.util.Optional;
