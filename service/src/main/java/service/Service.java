@@ -1,9 +1,9 @@
-package dao;
+package service;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface Dao<K,E> { //Key Entity
+public interface Service<K,E> {
     List<E> getAll();
 
     Optional<E> get(K k);
@@ -12,6 +12,5 @@ public interface Dao<K,E> { //Key Entity
 
     Optional<E> delete(K k);
 
-    void update(E e);
-
+   void update(E e);
 }
