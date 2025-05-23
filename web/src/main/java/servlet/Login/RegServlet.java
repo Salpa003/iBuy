@@ -16,6 +16,10 @@ public class RegServlet extends HttpServlet {
        String name = req.getParameter("name");
        String password = req.getParameter("password");
        String mail = req.getParameter("mail");
+
+        System.out.println(name);
+        System.out.println(password);
+        System.out.println(mail);
     }
 
     @Override

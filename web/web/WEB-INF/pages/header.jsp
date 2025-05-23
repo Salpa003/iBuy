@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>A</title>
+
 </head>
 <body>
 <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: darkgray;">

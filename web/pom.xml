@@ -11,10 +11,10 @@
 
     <groupId>org.salpa</groupId>
     <artifactId>web</artifactId>
+    <packaging>war</packaging>
+    <name>web </name>
 
     <properties>
-        <maven.compiler.source>22</maven.compiler.source>
-        <maven.compiler.target>22</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -36,4 +36,14 @@
             <artifactId>jakarta.servlet.jsp.jstl</artifactId>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>
