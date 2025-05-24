@@ -1,4 +1,4 @@
-package servlet;
+package servlet.Login;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -7,12 +7,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.io.Writer;
 
-@WebServlet("/home")
-public class HomeServlet extends HttpServlet {
-
+@WebServlet("/tt")
+public class TTServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("pages/home.jsp").forward(req, resp);
+        try (Writer writer = resp.getWriter()) {
+            writer.write("Hello");
+        }
     }
 }
