@@ -10,7 +10,19 @@
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/untitled/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/untitled/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/web/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/web/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/src/main/java/servlet/home.jsp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/src/main/java/web/WEB-INF" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/web/src/main/web" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/webapp/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/webapp/src/main/java/servlet/BasketServlet.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/webapp/src/main/java/servlet/HomeServlet.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/webapp/src/main/java/servlet/Login/LoginServlet.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/webapp/src/main/java/servlet/Login/RegServlet.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/webapp/src/main/java/servlet/Login/TTServlet.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/webapp/src/main/java/servlet/ProfileServlet.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/webapp/src/main/java/servlet/SearchServlet.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/webapp/src/main/java/util/JspPath.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/webapp/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/webapp/src/main/web" charset="windows-1251" />
   </component>
 </project>

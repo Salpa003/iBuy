@@ -1,34 +1,37 @@
 package entity;
 
 import java.util.Objects;
+import java.util.Set;
 
 public class User {
     private int id;
     private String name;
     private String password;
     private String mail;
-    private int activate_code;
-    private boolean activate;
 
-    public User(String name, String password, String mail, int activate_code, boolean activate) {
-        this.name = name;
-        this.password = password;
-        this.mail = mail;
-        this.activate_code = activate_code;
-        this.activate = activate;
-    }
+    private Set<Product> products;
 
-    public User(int id, String name, String password, String mail, int activate_code, boolean activate) {
+    public User(int id, String name, String password, String mail, Set<Product> products) {
         this.id = id;
         this.name = name;
         this.password = password;
         this.mail = mail;
-        this.activate_code = activate_code;
-        this.activate = activate;
+        this.products = products;
+    }
+
+    public User(String name, String password, String mail, Set<Product> products) {
+        this.name = name;
+        this.password = password;
+        this.mail = mail;
+        this.products = products;
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -55,20 +58,12 @@ public class User {
         this.mail = mail;
     }
 
-    public int getActivate_code() {
-        return activate_code;
+    public Set<Product> getProducts() {
+        return products;
     }
 
-    public void setActivate_code(int activate_code) {
-        this.activate_code = activate_code;
-    }
-
-    public boolean isActivate() {
-        return activate;
-    }
-
-    public void setActivate(boolean activate) {
-        this.activate = activate;
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 
     @Override
