@@ -6,7 +6,7 @@ import entity.User;
 import java.util.List;
 import java.util.Optional;
 
-public class UserService implements Service<Integer,User> {
+public class UserService  implements Service<Integer,User> {
     private UserDao userDao = UserDao.getInstance();
 
     private static UserService INSTANCE = new UserService();

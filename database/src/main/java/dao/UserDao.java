@@ -83,8 +83,6 @@ public class UserDao implements Dao<Integer, User> {
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getMail());
-            preparedStatement.setInt(4, user.getActivate_code());
-            preparedStatement.setBoolean(5, user.isActivate());
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -113,8 +111,6 @@ public class UserDao implements Dao<Integer, User> {
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getMail());
-            preparedStatement.setBoolean(4, user.isActivate());
-            preparedStatement.setInt(5, user.getActivate_code());
             preparedStatement.setInt(6, user.getId());
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -130,9 +126,7 @@ public class UserDao implements Dao<Integer, User> {
                 resultSet.getInt("id"),
                 resultSet.getString("name"),
                 resultSet.getString("password"),
-                resultSet.getString("email"),
-                resultSet.getInt("activate_code"),
-                resultSet.getBoolean("is_activate")
+                resultSet.getString("email")
         );
     }
 }

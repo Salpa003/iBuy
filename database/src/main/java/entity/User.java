@@ -11,7 +11,7 @@ public class User {
 
     private Set<Product> products;
 
-    public User(int id, String name, String password, String mail, Set<Product> products) {
+    public User(int id, String name, String password, String mail) {
         this.id = id;
         this.name = name;
         this.password = password;
@@ -19,7 +19,7 @@ public class User {
         this.products = products;
     }
 
-    public User(String name, String password, String mail, Set<Product> products) {
+    public User(String name, String password, String mail) {
         this.name = name;
         this.password = password;
         this.mail = mail;

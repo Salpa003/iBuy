@@ -15,6 +15,7 @@
       <set>
         <option value="$PROJECT_DIR$/servlet/pom.xml" />
         <option value="$PROJECT_DIR$/web/pom.xml" />
+        <option value="$PROJECT_DIR$/webapp/pom.xml" />
       </set>
     </option>
   </component>
