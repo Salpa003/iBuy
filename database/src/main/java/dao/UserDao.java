@@ -14,26 +14,27 @@ import java.util.Optional;
 public class UserDao implements Dao<Integer, User> {
 
     private String GET_ALL_SQL = """
-            SELECT id, name, password, email, is_activate, activate_code
+            SELECT id, name, password, email
             FROM users.users
             """;
 
     private String GET_SQL = GET_ALL_SQL + " WHERE id = ? ;";
 
     private String SAVE_SQL = """
-            INSERT INTO users.users (name, password, email, activate_code, is_activate)
-            VALUES (?,?,?,?,?);
+            INSERT INTO users.users (name, password, email)
+            VALUES (?,?,?)
+            RETURNING id;
             """;
 
     private String DELETE_SQL = """
             DELETE FROM users.users
             WHERE id = ?
-            RETURNING id, name, password, email, is_activate, activate_code;
+            RETURNING id, name, password, email;
             """;
 
     private String UPDATE_SQL = """
             UPDATE users.users
-            SET name = ?, password = ?, email = ?, is_activate = ?, activate_code = ?
+            SET name = ?, password = ?, email = ?
             WHERE id = ?;
             """;
 
@@ -77,16 +78,19 @@ public class UserDao implements Dao<Integer, User> {
     }
 
     @Override
-    public void save(User user) {
+    public Optional<Integer> save(User user) {
         try (Connection connection = ConnectionManager.open();
              PreparedStatement preparedStatement = connection.prepareStatement(SAVE_SQL)) {
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getMail());
-            preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                return Optional.ofNullable(resultSet.getInt("id"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return Optional.empty();
     }
 
     @Override

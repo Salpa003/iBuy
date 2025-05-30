@@ -8,7 +8,7 @@ public interface Service<K,E> {
 
     Optional<E> get(K k);
 
-    void save(E e);
+    Optional<K> save(E e);
 
     Optional<E> delete(K k);
 

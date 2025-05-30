@@ -23,8 +23,8 @@ public class ProductDao implements Dao<Integer, Product> {
     }
 
     @Override
-    public void save(Product product) {
-
+    public Optional<Integer> save(Product product) {
+        return Optional.empty();
     }
 
     @Override

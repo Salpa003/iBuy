@@ -8,7 +8,7 @@ public interface Dao<K,E> { //Key Entity
 
     Optional<E> get(K k);
 
-    void save(E e);
+    Optional<K> save(E e);
 
     Optional<E> delete(K k);
 

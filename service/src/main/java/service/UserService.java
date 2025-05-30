@@ -29,8 +29,8 @@ public class UserService  implements Service<Integer,User> {
     }
 
     @Override
-    public void save(User user) {
-        userDao.save(user);
+    public Optional<Integer> save(User user) {
+       return userDao.save(user);
     }
 
     @Override

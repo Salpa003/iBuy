@@ -21,8 +21,8 @@ public class ProductService implements Service<Integer, Product> {
     }
 
     @Override
-    public void save(Product product) {
-        productDao.save(product);
+    public Optional<Integer> save(Product product) {
+       return productDao.save(product);
     }
 
     @Override
