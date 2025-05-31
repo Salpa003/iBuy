@@ -11,13 +11,12 @@ import util.PathToJsp;
 
 import java.io.IOException;
 
-@WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+@WebServlet("/registration")
+public class RegistrationServlet extends HttpServlet {
     private UserService service = UserService.getInstance();
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       req.getRequestDispatcher(PathToJsp.create("login")).forward(req,resp);
+        req.getRequestDispatcher(PathToJsp.create("registration")).forward(req,resp);
     }
 
     @Override
@@ -27,6 +26,10 @@ public class LoginServlet extends HttpServlet {
         String password = req.getParameter("password");
         int id = service.save(new User(name,password,mail)).get();
 
-        resp.getWriter().println("Your id = "+ id);
+        req.setAttribute("name",name);
+        req.setAttribute("password",password);
+        req.setAttribute("mail",mail);
+        req.setAttribute("id",id);
+        req.getRequestDispatcher(PathToJsp.create("AkkCreate")).forward(req,resp);
     }
 }
