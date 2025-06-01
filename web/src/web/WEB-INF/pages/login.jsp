@@ -15,7 +15,7 @@
         <h2>Вход в аккаунт</h2>
         <form action="/login" method="post">
             <label> Name
-                <input name="name" type="text" required>
+                <input name="name" type="text" value="${requestScope.get("name")}" required>
             </label> <br> <br>
             <label> Password
                 <input name="password" type="password" required>
@@ -27,6 +27,8 @@
         <form action="/registration">
             <input type="submit" value="Registration" />
         </form>
+        <br>
+        <H2 style="color: red">${requestScope.get("errorMessage")}</H2>
     </center>
 </body>
 </html>

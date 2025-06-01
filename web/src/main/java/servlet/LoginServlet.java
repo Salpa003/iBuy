@@ -1,8 +1,11 @@
 package servlet;
 
 import entity.User;
+import exception.IncorrectPasswordException;
+import exception.UserNotFoundException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,6 +13,7 @@ import service.UserService;
 import util.PathToJsp;
 
 import java.io.IOException;
+import java.util.Optional;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -17,16 +21,50 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       req.getRequestDispatcher(PathToJsp.create("login")).forward(req,resp);
+        Cookie[] cookies = req.getCookies();
+        User user = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("id".equals(cookie.getName())) {
+                    String id = cookie.getValue();
+                    Optional<User> maybeUser = service.get(Integer.parseInt(id));
+                    if (maybeUser.isPresent()) {
+                        user = maybeUser.get();
+                        break;
+                    }
+                }
+            }
+        }
+        if (user == null)
+        req.getRequestDispatcher(PathToJsp.create("login")).forward(req, resp);
+        else {
+            System.out.println(user+" log");
+            req.setAttribute("user",user);
+            req.getRequestDispatcher("/home").forward(req,resp);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
-        String mail = req.getParameter("mail");
         String password = req.getParameter("password");
-        int id = service.save(new User(name,password,mail)).get();
 
-        resp.getWriter().println("Your id = "+ id);
+        try {
+            int id = service.login(name, password);
+
+            Cookie cookie = new Cookie("id", String.valueOf(id));
+            cookie.setMaxAge(60 * 60 * 24 * 30);
+            resp.addCookie(cookie);
+
+           resp.sendRedirect("/home");
+        } catch (IncorrectPasswordException e) {
+            req.setAttribute("name", name);
+            req.setAttribute("errorMessage", e.getMessage());
+            req.getRequestDispatcher(PathToJsp.create("login")).forward(req, resp);
+        } catch (UserNotFoundException e) {
+            req.setAttribute("errorMessage", e.getMessage());
+            req.getRequestDispatcher(PathToJsp.create("login")).forward(req, resp);
+        }
+
     }
 }

@@ -2,6 +2,8 @@ package service;
 
 import dao.UserDao;
 import entity.User;
+import exception.IncorrectPasswordException;
+import exception.UserNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +43,20 @@ public class UserService  implements Service<Integer,User> {
     @Override
     public void update(User user) {
       userDao.update(user);
+    }
+
+    public Integer login(String name,String password) throws UserNotFoundException, IncorrectPasswordException {
+        Optional<User> maybeUser = userDao.getUserByName(name);
+        if (maybeUser.isPresent()){
+            User user = maybeUser.get();
+            if (user.getPassword().equals(password)) {
+                return user.getId();
+            } else {
+                throw new IncorrectPasswordException("incorrect password");
+            }
+        } else {
+            throw new UserNotFoundException("user not found");
+        }
     }
 }
 

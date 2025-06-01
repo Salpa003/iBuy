@@ -14,9 +14,9 @@
 <center>
     <H2>Вы создали аккаунт</h2>
     <h2>ID : ${requestScope.get("id")}</h2>
-    <h2>Имя : ${name}</h2>
-    <h2>Пароль : ${password}</h2>
-    <h2>Почта : ${mail}</h2>
+    <h2>Имя : ${requestScope.get("name")}</h2>
+    <h2>Пароль : ${requestScope.get("password")}</h2>
+    <h2>Почта : ${requestScope.get("mail")}</h2>
 
     <form action="/login">
         <input type="submit" value="Login" />

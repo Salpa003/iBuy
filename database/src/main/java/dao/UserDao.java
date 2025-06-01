@@ -38,6 +38,11 @@ public class UserDao implements Dao<Integer, User> {
             WHERE id = ?;
             """;
 
+    private String GET_USER_BY_NAME_SQL = """
+            SELECT id,name,email,password
+            FROM users.users
+            WHERE name = ?;
+            """;
 
     private static final UserDao INSTANTS = new UserDao();
 
@@ -52,7 +57,7 @@ public class UserDao implements Dao<Integer, User> {
              PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_SQL)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                users.add(ResulSetToEntity(resultSet));
+                users.add(resulSetToEntity(resultSet));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -69,7 +74,7 @@ public class UserDao implements Dao<Integer, User> {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                user = ResulSetToEntity(resultSet);
+                user = resulSetToEntity(resultSet);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -101,7 +106,7 @@ public class UserDao implements Dao<Integer, User> {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
-                user = ResulSetToEntity(resultSet);
+                user = resulSetToEntity(resultSet);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -121,11 +126,26 @@ public class UserDao implements Dao<Integer, User> {
         }
     }
 
+    public Optional<User> getUserByName(String name) {
+        User user = null;
+        try (Connection connection = ConnectionManager.open();
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_BY_NAME_SQL)) {
+            preparedStatement.setString(1,name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                user = resulSetToEntity(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.ofNullable(user);
+    }
+
     public static UserDao getInstance() {
         return INSTANTS;
     }
 
-    private User ResulSetToEntity(ResultSet resultSet) throws SQLException {
+    private User resulSetToEntity(ResultSet resultSet) throws SQLException {
         return new User(
                 resultSet.getInt("id"),
                 resultSet.getString("name"),
@@ -133,4 +153,6 @@ public class UserDao implements Dao<Integer, User> {
                 resultSet.getString("email")
         );
     }
+
+
 }

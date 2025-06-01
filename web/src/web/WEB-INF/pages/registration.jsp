@@ -27,6 +27,11 @@
             <input type="submit" value="SEND">
         </label>
     </form>
+    <form action="/login" method="get">
+        <label>
+            <input type="submit" value="Back">
+        </label>
+    </form>
 </center>
 </body>
 </html>
