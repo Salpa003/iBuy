@@ -44,6 +44,18 @@ public class UserDao implements Dao<Integer, User> {
             WHERE name = ?;
             """;
 
+    private String SAVE_CODE_SQL = """
+             INSERT INTO users.users (name, password, email,activate_code)
+            VALUES (?,?,?,?)
+            RETURNING id;
+            """;
+
+    private String GET_CODE_BY_ID = """
+            SELECT activate_code
+            FROM users.users
+            WHERE id = ?;
+            """;
+
     private static final UserDao INSTANTS = new UserDao();
 
     private UserDao() {
@@ -97,6 +109,21 @@ public class UserDao implements Dao<Integer, User> {
         }
         return Optional.empty();
     }
+    public Optional<Integer> save(User user,int code) {
+        try (Connection connection = ConnectionManager.open();
+             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_CODE_SQL)) {
+            preparedStatement.setString(1, user.getName());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.setString(3, user.getMail());
+            preparedStatement.setInt(4,code);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+                return Optional.ofNullable(resultSet.getInt("id"));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return Optional.empty();
+    }
 
     @Override
     public Optional<User> delete(Integer id) {
@@ -141,6 +168,24 @@ public class UserDao implements Dao<Integer, User> {
         return Optional.ofNullable(user);
     }
 
+    public boolean activate(int id,int code) {
+        try (Connection connection = ConnectionManager.open();
+        PreparedStatement preparedStatement = connection.prepareStatement(GET_CODE_BY_ID)) {
+            preparedStatement.setInt(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int actualCode = resultSet.getInt("activate_code");
+                System.out.println(actualCode + " A");
+                if (actualCode == code) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (SQLException e) {
+            return false;
+        }
+    }
+
     public static UserDao getInstance() {
         return INSTANTS;
     }
@@ -153,6 +198,5 @@ public class UserDao implements Dao<Integer, User> {
                 resultSet.getString("email")
         );
     }
-
 
 }

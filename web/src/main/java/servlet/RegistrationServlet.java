@@ -3,6 +3,7 @@ package servlet;
 import entity.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,12 +25,11 @@ public class RegistrationServlet extends HttpServlet {
         String name = req.getParameter("name");
         String mail = req.getParameter("mail");
         String password = req.getParameter("password");
-        int id = service.save(new User(name,password,mail)).get();
-
-        req.setAttribute("name",name);
-        req.setAttribute("password",password);
-        req.setAttribute("mail",mail);
-        req.setAttribute("id",id);
-        req.getRequestDispatcher(PathToJsp.create("AkkCreate")).forward(req,resp);
+        User user = new User(name,password,mail);
+        int id = service.save(user).get();
+        Cookie cookie = new Cookie("id",id+"");
+        cookie.setMaxAge(60*60);
+        resp.addCookie(cookie);
+        resp.sendRedirect("/confirmMail");
     }
 }

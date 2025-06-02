@@ -13,12 +13,12 @@
 <body>
 <center>
     <H2>Вы создали аккаунт</h2>
-    <h2>ID : ${requestScope.get("id")}</h2>
-    <h2>Имя : ${requestScope.get("name")}</h2>
-    <h2>Пароль : ${requestScope.get("password")}</h2>
-    <h2>Почта : ${requestScope.get("mail")}</h2>
+    <h2>ID : ${requestScope.user.id}</h2>
+    <h2>Имя : ${requestScope.user.name}</h2>
+    <h2>Пароль : ${requestScope.user.password}</h2>
+    <h2>Почта : ${requestScope.user.mail}</h2>
 
-    <form action="/login">
+    <form action="/login" method="get">
         <input type="submit" value="Login" />
     </form>
 </center>

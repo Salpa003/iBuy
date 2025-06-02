@@ -4,14 +4,16 @@ import dao.UserDao;
 import entity.User;
 import exception.IncorrectPasswordException;
 import exception.UserNotFoundException;
+import util.MailManager;
 
 import java.util.List;
 import java.util.Optional;
 
-public class UserService  implements Service<Integer,User> {
+public class UserService implements Service<Integer, User> {
     private UserDao userDao = UserDao.getInstance();
 
     private static UserService INSTANCE = new UserService();
+
     private UserService() {
 
     }
@@ -32,7 +34,8 @@ public class UserService  implements Service<Integer,User> {
 
     @Override
     public Optional<Integer> save(User user) {
-       return userDao.save(user);
+        int code = MailManager.sendCode(user.getMail());
+        return userDao.save(user, code);
     }
 
     @Override
@@ -42,12 +45,12 @@ public class UserService  implements Service<Integer,User> {
 
     @Override
     public void update(User user) {
-      userDao.update(user);
+        userDao.update(user);
     }
 
-    public Integer login(String name,String password) throws UserNotFoundException, IncorrectPasswordException {
+    public Integer login(String name, String password) throws UserNotFoundException, IncorrectPasswordException {
         Optional<User> maybeUser = userDao.getUserByName(name);
-        if (maybeUser.isPresent()){
+        if (maybeUser.isPresent()) {
             User user = maybeUser.get();
             if (user.getPassword().equals(password)) {
                 return user.getId();
@@ -57,6 +60,10 @@ public class UserService  implements Service<Integer,User> {
         } else {
             throw new UserNotFoundException("user not found");
         }
+    }
+
+    public boolean activate(int id, int code) {
+        return userDao.activate(id,code);
     }
 }
 

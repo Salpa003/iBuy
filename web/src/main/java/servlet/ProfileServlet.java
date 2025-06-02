@@ -14,13 +14,11 @@ import util.UserUtil;
 import java.io.IOException;
 import java.util.Optional;
 
-@WebServlet("/home")
-public class HomeServlet extends HttpServlet {
+@WebServlet("/profile")
+public class ProfileServlet extends HttpServlet {
     private UserService service = UserService.getInstance();
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher(PathToJsp.create("home")).forward(req, resp);
-
+        req.getRequestDispatcher(PathToJsp.create("profile")).forward(req,resp);
     }
 }
