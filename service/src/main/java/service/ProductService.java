@@ -1,8 +1,5 @@
 package service;
 
-import dao.ProductDao;
-import entity.Product;
-
 import java.util.List;
 import java.util.Optional;
 

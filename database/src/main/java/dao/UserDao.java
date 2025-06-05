@@ -13,44 +13,44 @@ import java.util.Optional;
 
 public class UserDao implements Dao<Integer, User> {
 
-    private String GET_ALL_SQL = """
+    private static final String GET_ALL_SQL = """
             SELECT id, name, password, email
             FROM users.users
             """;
 
-    private String GET_SQL = GET_ALL_SQL + " WHERE id = ? ;";
+    private  static final String GET_SQL = GET_ALL_SQL + " WHERE id = ? ;";
 
-    private String SAVE_SQL = """
+    private static final String SAVE_SQL = """
             INSERT INTO users.users (name, password, email)
             VALUES (?,?,?)
             RETURNING id;
             """;
 
-    private String DELETE_SQL = """
+    private static final String DELETE_SQL = """
             DELETE FROM users.users
             WHERE id = ?
             RETURNING id, name, password, email;
             """;
 
-    private String UPDATE_SQL = """
+    private static final String UPDATE_SQL = """
             UPDATE users.users
             SET name = ?, password = ?, email = ?
             WHERE id = ?;
             """;
 
-    private String GET_USER_BY_NAME_SQL = """
+    private static final String GET_USER_BY_NAME_SQL = """
             SELECT id,name,email,password
             FROM users.users
             WHERE name = ?;
             """;
 
-    private String SAVE_CODE_SQL = """
+    private static final String SAVE_CODE_SQL = """
              INSERT INTO users.users (name, password, email,activate_code)
             VALUES (?,?,?,?)
             RETURNING id;
             """;
 
-    private String GET_CODE_BY_ID = """
+    private static final String GET_CODE_BY_ID = """
             SELECT activate_code
             FROM users.users
             WHERE id = ?;
@@ -103,7 +103,7 @@ public class UserDao implements Dao<Integer, User> {
             preparedStatement.setString(3, user.getMail());
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
-                return Optional.ofNullable(resultSet.getInt("id"));
+                return Optional.of(resultSet.getInt("id"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -118,7 +118,7 @@ public class UserDao implements Dao<Integer, User> {
             preparedStatement.setInt(4,code);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
-                return Optional.ofNullable(resultSet.getInt("id"));
+                return Optional.of(resultSet.getInt("id"));
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -175,10 +175,7 @@ public class UserDao implements Dao<Integer, User> {
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 int actualCode = resultSet.getInt("activate_code");
-                System.out.println(actualCode + " A");
-                if (actualCode == code) {
-                    return true;
-                }
+                return actualCode == code;
             }
             return false;
         } catch (SQLException e) {

@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="iBuy:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/iBuy_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="iBuy" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="iBuy/web/Web" />
+    </root>
+  </artifact>
+</component>
