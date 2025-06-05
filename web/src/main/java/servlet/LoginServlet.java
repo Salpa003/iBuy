@@ -1,6 +1,5 @@
 package servlet;
 
-import entity.User;
 import exception.IncorrectPasswordException;
 import exception.UserNotFoundException;
 import jakarta.servlet.ServletException;
@@ -13,11 +12,10 @@ import service.UserService;
 import util.PathToJsp;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
-    private UserService service = UserService.getInstance();
+    private final UserService service = UserService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -56,7 +56,7 @@ public class UserDao implements Dao<Integer, User> {
             WHERE id = ?;
             """;
 
-    private static final UserDao INSTANTS = new UserDao();
+    private static final UserDao INSTANCE = new UserDao();
 
     private UserDao() {
 
@@ -184,7 +184,7 @@ public class UserDao implements Dao<Integer, User> {
     }
 
     public static UserDao getInstance() {
-        return INSTANTS;
+        return INSTANCE;
     }
 
     private User resulSetToEntity(ResultSet resultSet) throws SQLException {
